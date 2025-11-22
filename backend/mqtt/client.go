@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	mqtt "github.com/eclipse-paho/paho.mqtt.golang"
+	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
 var connectHandler mqtt.OnConnectHandler = func(client mqtt.Client) {

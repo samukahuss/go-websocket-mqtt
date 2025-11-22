@@ -4,12 +4,13 @@ import (
 	"log"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	proto "github.com/samukahuss/go-websocket-mqtt/internal/proto"
+	pb "github.com/samukahuss/go-websocket-mqtt/proto"
+	proto "google.golang.org/protobuf/proto"
 )
 
 type TargeredMessage struct {
 	TargetID string
-	Payload  byte
+	Payload  []byte
 }
 
 type Hub struct {
@@ -72,7 +73,7 @@ func (h *Hub) Run() {
 				log.Printf("Client %s not found for unicast message", message.TargetID)
 			}
 
-			var msg proto.WebSocketMessage
+			var msg pb.WebSocketMessage
 
 			if err := proto.Unmarshal(message.Payload, &msg); err == nil {
 				log.Printf("Publishing message type '%s' to MQTT topic '%s'", msg.Type, h.mqttTopic)
