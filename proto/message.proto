@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package =  "backend/internal/proto";
+
+message WebSocketMessage {
+  string type = 1;
+  bytes payload = 2;
+}
