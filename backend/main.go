@@ -33,6 +33,7 @@ func serveWs(hub *ws.Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("Failed to upgrade connection to websocket: %v", err)
+		return
 	}
 
 	// Cada client precisa de um ID unico
