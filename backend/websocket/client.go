@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	pb "github.com/samukahuss/go-websocket-mqtt/proto"
+	pb "github.com/samukahuss/go-websocket-mqtt/backend/internal/proto"
 	proto "google.golang.org/protobuf/proto"
 )
 

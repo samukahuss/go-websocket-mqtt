@@ -4,7 +4,7 @@ import (
 	"log"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	pb "github.com/samukahuss/go-websocket-mqtt/proto"
+	pb "github.com/samukahuss/go-websocket-mqtt/backend/internal/proto"
 	proto "google.golang.org/protobuf/proto"
 )
 
@@ -19,7 +19,7 @@ type Hub struct {
 	// pra receber menssagens de um unico client
 	Unicast chan *TargeredMessage
 	// um channel pra novos clients
-	register chan *Client
+	Register chan *Client
 	// channel pra remover clients desconectados
 	unregister chan *Client
 	// guardando uma referencia do MQTT client pra publicar menssagens
@@ -31,7 +31,7 @@ type Hub struct {
 func NewHub(mqttClient mqtt.Client, topic string) *Hub {
 	return &Hub{
 		Unicast:    make(chan *TargeredMessage),
-		register:   make(chan *Client),
+		Register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[string]*Client),
 		mqttClient: mqttClient,
@@ -44,7 +44,7 @@ func (h *Hub) Run() {
 	for {
 		select {
 		// Case 1: client connecta
-		case client := <-h.register:
+		case client := <-h.Register:
 			h.clients[client.ID] = client
 			log.Printf("Client %s registered", client.ID)
 
