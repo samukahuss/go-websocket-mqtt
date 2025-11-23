@@ -16,7 +16,8 @@ import (
 
 var (
 	mqttBroker string = getEnv("MQTT_BROKER")
-	mqttTopic  string = getEnv("MQTT_TOPIC")
+	mqttTopicA string = getEnv("MQTT_TOPIC_A")
+	mqttTopicB string = getEnv("MQTT_TOPIC_B")
 	serverAddr string = getEnv("SERVER_ADDR")
 )
 
@@ -68,13 +69,20 @@ func main() {
 	log.Println("MQTT client created and connecting...")
 
 	// criadno o websocket hub
-	hub := ws.NewHub(mqttClient, mqttTopic)
+	hubA := ws.NewHub(mqttClient, mqttTopicA)
+	hubB := ws.NewHub(mqttClient, mqttTopicB)
 
 	// rodando o hub em uma go routine separada pra nao bloquear a main trhead
-	go hub.Run()
-	log.Println("Websocket is running in background")
+	go hubA.Run()
+	log.Println("Websocket A is running in background")
 
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) { serveWs(hub, w, r) })
+	go hubB.Run()
+	log.Println("Websocket B is running in background")
+
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		serveWs(hubA, w, r)
+		serveWs(hubB, w, r)
+	})
 
 	// iniciando o httpserver em uma go routine
 	go func() {
