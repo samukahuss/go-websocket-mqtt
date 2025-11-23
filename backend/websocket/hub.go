@@ -39,7 +39,6 @@ func NewHub(mqttClient mqtt.Client, topic string) *Hub {
 	}
 }
 
-// loop principal
 func (h *Hub) Run() {
 	for {
 		select {
@@ -53,7 +52,7 @@ func (h *Hub) Run() {
 			if _, ok := h.clients[client.ID]; ok {
 				delete(h.clients, client.ID)
 				close(client.send)
-				log.Printf("Client %s unregistered")
+				log.Printf("Client %s unregistered", client.ID)
 			}
 		case message := <-h.Unicast:
 

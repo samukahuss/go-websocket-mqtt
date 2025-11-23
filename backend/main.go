@@ -14,11 +14,22 @@ import (
 	ws "github.com/samukahuss/go-websocket-mqtt/backend/websocket"
 )
 
-const (
-	mqttBroker = "localhost:1883"
-	mqttTopic  = "go-websocket-mqtt"
-	serverAddr = "localhost:8080"
+var (
+	mqttBroker string = getEnv("MQTT_BROKER")
+	mqttTopic  string = getEnv("MQTT_TOPIC")
+	serverAddr string = getEnv("SERVER_ADDR")
 )
+
+func getEnv(s string) string {
+	val, ok := os.LookupEnv(s)
+
+	if ok {
+		return val
+	} else {
+		log.Printf("Enviroment variable %s not setted!", s)
+		panic(1)
+	}
+}
 
 // Um upgrader pra todas as connections
 var upgrader = websocket.Upgrader{

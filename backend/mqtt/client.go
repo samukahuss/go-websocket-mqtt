@@ -30,8 +30,3 @@ func NewClient(broker, clientID string) mqtt.Client {
 
 	return client
 }
-
-// Packages: The package mqtt declaration at the top must match the name of the directory the file is in. This is how Go organizes code.
-// Callbacks: The OnConnect and OnConnectionLost handlers are a great example of a common programming pattern. You give another piece of code (the MQTT library) a function to execute when a specific event occurs.
-// Asynchronous Operations: client.Connect() doesn't wait. It starts the work in the background. The token it returns is an object that lets you check the status of that work later, for example by calling token.Wait().
-// Error Handling: The if token.Wait() && token.Error() != nil block is a standard way to handle errors from asynchronous operations in this library.
